@@ -1,0 +1,14 @@
+name: CustomSpawners
+version: 1.0
+author: moderator_man
+main: net.oldschoolminecraft.cs.CustomSpawners
+depend:
+  - Essentials
+commands:
+  setspawnermob:
+    description: Change the type of a selected spawner
+    usage: /setspawnermob <mob>
+    permission: cs.modify
+    default: op
+    aliases:
+      - ssm
