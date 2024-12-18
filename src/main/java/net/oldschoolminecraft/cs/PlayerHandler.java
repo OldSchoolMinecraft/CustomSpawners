@@ -27,7 +27,7 @@ public class PlayerHandler extends PlayerListener
             if (!(state instanceof CraftCreatureSpawner)) return; // don't allow selection of non-spawner blocks
             String creature = CustomSpawners.capitalCase(((CraftCreatureSpawner)state).getCreatureType().toString());
             selectedBlocks.put(event.getPlayer(), clicked);
-            event.getPlayer().sendMessage(ChatColor.RED + "You have selected a " + creature + " spawner!");
+            event.getPlayer().sendMessage(ChatColor.GREEN + "You have selected a " + creature + " spawner!");
         }
     }
 
