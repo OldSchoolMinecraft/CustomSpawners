@@ -47,7 +47,7 @@ public class SpawnerCommand implements CommandExecutor
         BlockState rawState = block.getState();
         if (rawState instanceof CraftCreatureSpawner)
         {
-            String keyBase = "mob." + mob.toLowerCase();
+            String keyBase = "mobs." + mob.toLowerCase();
             String keyEnabled = keyBase + ".enabled";
             String keyPrice = keyBase + ".price";
             System.out.println("keyBase=" + keyBase);
