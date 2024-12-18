@@ -3,6 +3,7 @@ package net.oldschoolminecraft.cs;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -45,7 +46,7 @@ public class SpawnerCommand implements CommandExecutor
 
         Block block = plugin.getHandler().getSelectedBlock(ply);
         BlockState rawState = block.getState();
-        if (rawState instanceof CraftCreatureSpawner)
+        if (rawState instanceof CreatureSpawner)
         {
             String keyBase = "mobs." + mob.toLowerCase();
             String keyEnabled = keyBase + ".enabled";
@@ -77,7 +78,7 @@ public class SpawnerCommand implements CommandExecutor
             }
 
             plugin.takeMoney(ply, price);
-            ((CraftCreatureSpawner)rawState).setCreatureType(CreatureType.fromName(mob));
+            ((CreatureSpawner)rawState).setCreatureType(CreatureType.fromName(mob));
             ply.sendMessage(ChatColor.GREEN + "The spawner type has been successfully changed for: " + priceStr + "!");
         }
 

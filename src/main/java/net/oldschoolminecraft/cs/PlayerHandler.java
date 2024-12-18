@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.craftbukkit.block.CraftCreatureSpawner;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
@@ -24,8 +25,8 @@ public class PlayerHandler extends PlayerListener
         {
             Block clicked = event.getClickedBlock();
             BlockState state = clicked.getState();
-            if (!(state instanceof CraftCreatureSpawner)) return; // don't allow selection of non-spawner blocks
-            String creature = CustomSpawners.capitalCase(((CraftCreatureSpawner)state).getCreatureType().toString());
+            if (!(state instanceof CreatureSpawner)) return; // don't allow selection of non-spawner blocks
+            String creature = CustomSpawners.capitalCase(((CreatureSpawner)state).getCreatureType().toString());
             selectedBlocks.put(event.getPlayer(), clicked);
             event.getPlayer().sendMessage(ChatColor.GREEN + "You have selected a " + creature + " spawner!");
         }
