@@ -3,6 +3,8 @@ package net.oldschoolminecraft.cs;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.craftbukkit.block.CraftCreatureSpawner;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -20,7 +22,12 @@ public class PlayerHandler extends PlayerListener
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK &&
             event.getClickedBlock().getType() == Material.MOB_SPAWNER)
         {
-            selectedBlocks.put(event.getPlayer(), event.getClickedBlock());
+            Block clicked = event.getClickedBlock();
+            BlockState state = clicked.getState();
+            if (!(state instanceof CraftCreatureSpawner)) return; // don't allow selection of non-spawner blocks
+            String creature = CustomSpawners.capitalCase(((CraftCreatureSpawner)state).getCreatureType().toString());
+            selectedBlocks.put(event.getPlayer(), clicked);
+            event.getPlayer().sendMessage(ChatColor.RED + "You have selected a " + creature + " spawner!");
         }
     }
 

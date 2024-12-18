@@ -47,15 +47,21 @@ public class SpawnerCommand implements CommandExecutor
         BlockState rawState = block.getState();
         if (rawState instanceof CraftCreatureSpawner)
         {
-            boolean enabled = plugin.getConfig().getBoolean("mob." + mob.toLowerCase() + ".enabled", false);
+            String keyBase = "mob." + mob.toLowerCase();
+            String keyEnabled = keyBase + ".enabled";
+            String keyPrice = keyBase + ".price";
+            System.out.println("keyBase=" + keyBase);
+            System.out.println("keyEnabled=" + keyEnabled);
+            System.out.println("keyPrice=" + keyPrice);
+            boolean enabled = plugin.getConfig().getBoolean(keyEnabled, false);
 
             if (!enabled)
             {
-                ply.sendMessage(ChatColor.RED + "Sorry, this mob option has been disabled by the system administrator.");
+                ply.sendMessage(ChatColor.RED + "Sorry, this mob option is not allowed.");
                 return true;
             }
 
-            double price = plugin.getConfig().getDouble("mob." + mob.toLowerCase() + ".price", -1D);
+            double price = plugin.getConfig().getDouble(keyPrice, -1D);
             String priceStr = (price == 0D) ? "FREE" : "$" + price;
 
             if (price < 0D)
