@@ -9,6 +9,7 @@ public class PluginConfig extends Configuration
     public PluginConfig(File file)
     {
         super(file);
+        reload();
     }
 
     public void reload()

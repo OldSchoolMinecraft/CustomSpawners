@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 import static org.bukkit.Bukkit.getLogger;
 
 public class CustomSpawners extends JavaPlugin
@@ -16,6 +18,7 @@ public class CustomSpawners extends JavaPlugin
     public void onEnable()
     {
         essentials = (Essentials) getServer().getPluginManager().getPlugin("Essentials");
+        config = new PluginConfig(new File(getDataFolder(), "config.yml"));
 
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT, handler, Event.Priority.Normal, this);
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_MOVE, handler, Event.Priority.Normal, this);
