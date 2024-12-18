@@ -56,6 +56,7 @@ public class SpawnerCommand implements CommandExecutor
             }
 
             double price = plugin.getConfig().getDouble("mob." + mob.toLowerCase() + ".price", -1D);
+            String priceStr = (price == 0D) ? "FREE" : "$" + price;
 
             if (price < 0D)
             {
@@ -65,13 +66,13 @@ public class SpawnerCommand implements CommandExecutor
 
             if (!(plugin.canAfford(ply, price)))
             {
-                ply.sendMessage(ChatColor.RED + "You cannot afford this spawner type! It costs $" + price + ", but you only have $" + plugin.getBalance(ply) + ".");
+                ply.sendMessage(ChatColor.RED + "You cannot afford this spawner type! It costs " + priceStr + ", but you only have $" + plugin.getBalance(ply) + ".");
                 return true;
             }
 
             plugin.takeMoney(ply, price);
             ((CraftCreatureSpawner)rawState).setCreatureType(CreatureType.fromName(mob));
-            ply.sendMessage(ChatColor.GREEN + "The spawner type has been successfully changed for: $" + price + "!");
+            ply.sendMessage(ChatColor.GREEN + "The spawner type has been successfully changed for: " + priceStr + "!");
         }
 
         return true;
