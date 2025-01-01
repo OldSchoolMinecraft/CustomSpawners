@@ -52,4 +52,9 @@ public class PlayerHandler extends PlayerListener
     {
         return selectedBlocks.get(player);
     }
+
+    public void deselectBlock(Player player)
+    {
+        selectedBlocks.remove(player);
+    }
 }

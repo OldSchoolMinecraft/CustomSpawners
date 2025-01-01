@@ -14,11 +14,14 @@ public class CustomSpawners extends JavaPlugin
     private final PlayerHandler handler = new PlayerHandler();
     private Essentials essentials;
     private PluginConfig config;
+    private UpdateManager updateManager;
 
     public void onEnable()
     {
         essentials = (Essentials) getServer().getPluginManager().getPlugin("Essentials");
         config = new PluginConfig(new File(getDataFolder(), "config.yml"));
+
+        updateManager = new UpdateManager(this, "https://micro.os-mc.net/plugin_ci/CustomSpawners/latest");
 
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT, handler, Event.Priority.Normal, this);
         getServer().getPluginManager().registerEvent(Event.Type.PLAYER_MOVE, handler, Event.Priority.Normal, this);
@@ -29,6 +32,11 @@ public class CustomSpawners extends JavaPlugin
     public PlayerHandler getHandler()
     {
         return handler;
+    }
+
+    public File getPluginFile()
+    {
+        return getFile();
     }
 
     public boolean canAfford(Player ply, double required)
@@ -62,6 +70,7 @@ public class CustomSpawners extends JavaPlugin
 
     public void onDisable()
     {
+        updateManager.checkForUpdates();
         getLogger().info("CustomSpawners disabled");
     }
 }

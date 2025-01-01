@@ -1,5 +1,6 @@
 package net.oldschoolminecraft.cs;
 
+import com.earth2me.essentials.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -10,6 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.block.CraftCreatureSpawner;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
+
+import java.io.File;
 
 public class SpawnerCommand implements CommandExecutor
 {
@@ -35,7 +38,8 @@ public class SpawnerCommand implements CommandExecutor
             return true;
         }
 
-        String mob = CustomSpawners.capitalCase(args[0]);
+        String creatureName = args[0];
+        creatureName = creatureName.equalsIgnoreCase("PigZombie") ? "PigZombie" : Util.capitalCase(creatureName);
         Player ply = (Player) sender;
 
         if (!plugin.getHandler().hasBlockSelected(ply))
@@ -48,12 +52,9 @@ public class SpawnerCommand implements CommandExecutor
         BlockState rawState = block.getState();
         if (rawState instanceof CreatureSpawner)
         {
-            String keyBase = "mobs." + mob.toLowerCase();
+            String keyBase = "mobs." + creatureName.toLowerCase();
             String keyEnabled = keyBase + ".enabled";
             String keyPrice = keyBase + ".price";
-            System.out.println("keyBase=" + keyBase);
-            System.out.println("keyEnabled=" + keyEnabled);
-            System.out.println("keyPrice=" + keyPrice);
             boolean enabled = plugin.getConfig().getBoolean(keyEnabled, false);
 
             if (!enabled)
@@ -77,9 +78,12 @@ public class SpawnerCommand implements CommandExecutor
                 return true;
             }
 
+            System.out.println("trying to set creature from input: " + creatureName);
+            CreatureType newCreature = CreatureType.fromName(creatureName);
+            ((CreatureSpawner)rawState).setCreatureType(newCreature);
             plugin.takeMoney(ply, price);
-            ((CreatureSpawner)rawState).setCreatureType(CreatureType.fromName(mob));
-            ply.sendMessage(ChatColor.GREEN + "The spawner type has been successfully changed for: " + priceStr + "!");
+            ply.sendMessage(ChatColor.GREEN + "The spawner type has been set! Cost: " + priceStr);
+            plugin.getHandler().deselectBlock(ply); // deselect on success
         }
 
         return true;
