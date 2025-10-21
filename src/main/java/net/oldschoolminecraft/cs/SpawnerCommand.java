@@ -139,7 +139,7 @@ public class SpawnerCommand implements CommandExecutor
             String playerName = ply.getName();
             plugin.setPendingPurchase(playerName, new PendingPurchase(creatureName, price));
             ply.sendMessage(ChatColor.YELLOW + "Are you sure you want to set this spawner to " + creatureName + " for " + priceStr + "?");
-            ply.sendMessage(ChatColor.YELLOW + "Type /sp confirm within 30 seconds to complete the purchase.");
+            ply.sendMessage(ChatColor.YELLOW + "Type /ssm confirm within 30 seconds to complete the purchase.");
         }
 
         return true;

@@ -71,9 +71,9 @@ public class PriceCommand implements CommandExecutor
             if (args[0].equalsIgnoreCase("help"))
             {
                 sender.sendMessage(ChatColor.GOLD + "=== Spawner Commands ===");
-                sender.sendMessage(ChatColor.YELLOW + "/sp" + ChatColor.WHITE + " - View all spawner prices");
-                sender.sendMessage(ChatColor.YELLOW + "/sp <mob>" + ChatColor.WHITE + " - Search for a specific mob price");
-                sender.sendMessage(ChatColor.YELLOW + "/sp confirm" + ChatColor.WHITE + " - Confirm a pending spawner purchase");
+                sender.sendMessage(ChatColor.YELLOW + "/ssm" + ChatColor.WHITE + " - View all spawner prices");
+                sender.sendMessage(ChatColor.YELLOW + "/ssm <mob>" + ChatColor.WHITE + " - Search for a specific mob price");
+                sender.sendMessage(ChatColor.YELLOW + "/ssm confirm" + ChatColor.WHITE + " - Confirm a pending spawner purchase");
                 sender.sendMessage(ChatColor.YELLOW + "/setspawnermob <mob>" + ChatColor.WHITE + " - Set a spawner's mob type");
                 return true;
             }

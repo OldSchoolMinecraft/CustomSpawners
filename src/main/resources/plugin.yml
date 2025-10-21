@@ -10,13 +10,11 @@ commands:
     usage: /setspawnermob <mob>
     permission: cs.modify
     default: op
-    aliases:
-      - ssm
   spawnerprice:
     description: View spawner prices
     usage: /spawnerprice [mob]
     permission: cs.price
     default: true
     aliases:
-      - sp
+      - ssm
       - price
