@@ -12,3 +12,11 @@ commands:
     default: op
     aliases:
       - ssm
+  spawnerprice:
+    description: View spawner prices
+    usage: /spawnerprice [mob]
+    permission: cs.price
+    default: true
+    aliases:
+      - sp
+      - price

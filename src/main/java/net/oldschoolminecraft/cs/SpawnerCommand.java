@@ -1,6 +1,5 @@
 package net.oldschoolminecraft.cs;
 
-import com.earth2me.essentials.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -12,8 +11,6 @@ import org.bukkit.craftbukkit.block.CraftCreatureSpawner;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
-import java.io.File;
-
 public class SpawnerCommand implements CommandExecutor
 {
     private CustomSpawners plugin;
@@ -21,6 +18,56 @@ public class SpawnerCommand implements CommandExecutor
     public SpawnerCommand(CustomSpawners plugin)
     {
         this.plugin = plugin;
+    }
+
+    public static class PendingPurchase
+    {
+        public String creatureName;
+        public double price;
+        public long timestamp;
+
+        public PendingPurchase(String creatureName, double price)
+        {
+            this.creatureName = creatureName;
+            this.price = price;
+            this.timestamp = System.currentTimeMillis();
+        }
+
+        public boolean isExpired()
+        {
+            return System.currentTimeMillis() - timestamp > 30000; // 30 seconds
+        }
+    }
+
+    private String capitalCase(String input)
+    {
+        if (input == null || input.isEmpty())
+        {
+            return input;
+        }
+
+        // Handle underscores for mob types like IRON_GOLEM
+        String[] words = input.toLowerCase().split("_");
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < words.length; i++)
+        {
+            String word = words[i];
+            if (word.length() > 0)
+            {
+                result.append(Character.toUpperCase(word.charAt(0)));
+                if (word.length() > 1)
+                {
+                    result.append(word.substring(1));
+                }
+                if (i < words.length - 1)
+                {
+                    result.append(" ");
+                }
+            }
+        }
+
+        return result.toString();
     }
 
     @Override
@@ -32,6 +79,8 @@ public class SpawnerCommand implements CommandExecutor
             return true;
         }
 
+        Player ply = (Player) sender;
+
         if (args.length < 1)
         {
             sender.sendMessage(ChatColor.RED + "Usage: /setspawnermob <mob>");
@@ -39,8 +88,7 @@ public class SpawnerCommand implements CommandExecutor
         }
 
         String creatureName = args[0];
-        creatureName = creatureName.equalsIgnoreCase("PigZombie") ? "PigZombie" : Util.capitalCase(creatureName);
-        Player ply = (Player) sender;
+        creatureName = creatureName.equalsIgnoreCase("PigZombie") ? "PigZombie" : capitalCase(creatureName);
 
         if (!plugin.getHandler().hasBlockSelected(ply))
         {
@@ -80,10 +128,18 @@ public class SpawnerCommand implements CommandExecutor
 
             System.out.println("trying to set creature from input: " + creatureName);
             CreatureType newCreature = CreatureType.fromName(creatureName);
-            ((CreatureSpawner)rawState).setCreatureType(newCreature);
-            plugin.takeMoney(ply, price);
-            ply.sendMessage(ChatColor.GREEN + "The spawner type has been set! Cost: " + priceStr);
-            plugin.getHandler().deselectBlock(ply); // deselect on success
+
+            if (newCreature == null)
+            {
+                ply.sendMessage(ChatColor.RED + "Invalid creature type: " + creatureName);
+                return true;
+            }
+
+            // Store pending purchase and ask for confirmation
+            String playerName = ply.getName();
+            plugin.setPendingPurchase(playerName, new PendingPurchase(creatureName, price));
+            ply.sendMessage(ChatColor.YELLOW + "Are you sure you want to set this spawner to " + creatureName + " for " + priceStr + "?");
+            ply.sendMessage(ChatColor.YELLOW + "Type /sp confirm within 30 seconds to complete the purchase.");
         }
 
         return true;
